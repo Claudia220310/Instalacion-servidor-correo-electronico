@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Instalación de Correo Electrónico</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+         body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            min-width: 200px;
+            max-width: 200px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #ced4da;
+            position: fixed;
+            height: 100%;
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+            width: calc(100% - 220px);
+            flex: 1;
+        }
+        .code-container {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .code-container code {
+            display: block;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .sidebar .nav-link {
+            color: #495057;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .step-image {
+            max-width: 50%;
+            height: auto;
+            margin-top: 10px;
+        }
+        .img-container {
+            margin: 10px 0;
+        }
+        .footer {
+            padding: 5px;
+            text-align: center;
+            width: 100%;
+            color: #061c31;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Índice</h2>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#paso1">Configuración Inicial del Servidor</a>
+            <a class="nav-link" href="#paso2">Descargar e Instalar iRedMail</a>
+            <a class="nav-link" href="#paso3">Configuración de iRedMail</a>
+            <a class="nav-link" href="#paso4">Reiniciar la VM</a>
+            <a class="nav-link" href="#paso5">Crear Usuarios</a>
+            <a class="nav-link" href="#paso6">Correo de Prueba</a>
+        </nav>
+    </div>
+    <div class="content">
+        <h1 class="my-4">Guía de Instalación de Correo Electrónico</h1>
+        <p>Vamos a instalar iRedMail en un servidor de tipo Linux, específicamente en Ubuntu Server.</p>
+
+        <h3 id="paso1">Configuración Inicial del Servidor</h3>
+        <ol>
+            <li>Cambia la tarjeta de red a modo puente.</li>
+            <li>Ingresa al modo root:
+                <div class="code-container">
+                    <code>sudo su</code>
+                </div>
+            </li>
+            <li>Actualiza el servidor:
+                <div class="code-container">
+                    <code>apt-get update<br>apt-get upgrade</code>
+                </div>
+            </li>
+        </ol>
+
+        <h3 id="paso2">Descargar e Instalar iRedMail</h3>
+        <ol>
+            <li>Descarga iRedMail desde <a href="https://www.iredmail.org/" target="_blank">https://www.iredmail.org/</a>. Selecciona la versión STABLE y copia la dirección del enlace de descarga:
+                <div class="code-container">
+                    <code>wget https://github.com/iredmail/iRedMail/archive/refs/tags/1.6.8.tar.gz</code>
+                </div>
+            </li>
+            <li>Descomprime el archivo descargado:
+                <div class="code-container">
+                    <code>tar -xzvf 1.6.8.tar.gz</code>
+                </div>
+            </li>
+            <li>Cambia los permisos:
+                <div class="code-container">
+                    <code>chmod 777 -R iRedMail-1.6.8/</code>
+                </div>
+            </li>
+            <li>Configura el nombre del dominio:
+                <div class="code-container">
+                    <code>nano /etc/hosts</code>
+                </div>
+                Asegúrate de que exista la siguiente línea o modifícala:
+                <div class="code-container">
+                    <code>127.0.1.1 correo.midominio.com server localhost</code>
+                </div>
+                Nota: “server” es el nombre de tu máquina.
+            </li>
+            <br>
+            <li>Ejecuta iRedMail:
+                <div class="code-container">
+                    <code>cd iRedMail-1.6.8/<br>bash iRedMail.sh</code>
+                </div>
+            </li>
+        </ol>
+
+        <h3 id="paso3">Configuración de iRedMail</h3>
+        <ol>
+            <li>Confirma con "yes" y sigue las instrucciones en pantalla. Mantén las opciones por defecto y selecciona "Next" en cada paso.
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img1.png" alt="Imagen 1">
+                    <img class="step-image" src="img/Paso3-img2.png" alt="Imagen 1">
+                </div>
+            </li>
+            <li>Selecciona Nginx como servidor de correo y "Next".
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img3.png" alt="">
+                </div>
+            </li>
+            <li>Selecciona MariaDB como base de datos y "Next".
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img4.png" alt="">
+                </div>
+            </li>
+            <li>Especifica la contraseña para la raíz del administrador de MySQL y "Next".
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img5.png" alt="">
+                </div>
+            </li>
+            <li>Especifica el nombre de dominio de correo: <code>midominio.com</code> y "Next".
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img6.png" alt="">
+                </div>
+            </li>
+            <li>Especifica la contraseña para el administrador del dominio de correo y "Next".
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso3-img7.png" alt="">
+                </div>
+            </li>
+            <li>Confirma con "y" para proceder con la instalación.</li>
+        </ol>
+
+        <h3 id="paso4">Reiniciar la VM</h3>
+        <ol>
+            <li>Revisa la dirección IP dentro de la red con:
+                <div class="code-container">
+                    <code>ifconfig</code>
+                </div>
+            </li>
+            <li>Ingresa la dirección IP en el navegador de tu máquina física:
+                <div class="code-container">
+                    <code>http://192.168.0.14/iredadmin</code>
+                </div>
+                Nota: Recuerda que es la ip de tu máquina.
+            </li>
+            <br>
+            <li>Inicia sesión con:
+                <ul>
+                    <li>Usuario: <code>postmaster@midominio.com</code><em> (la configurada durante la instalación)</em></li>
+                    <li>Contraseña: <em>(la configurada durante la instalación)</em></li>
+                    <div class="img-container">
+                        <img class="step-image" src="img/Paso4-img1.png" alt="">
+                    </div>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 id="paso5">Crear Usuarios</h3>
+        <ol>
+            <li>Registra un par de usuarios para que se comuniquen entre ellos.
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso5-img1.png" alt="Imagen 1">
+                    <img class="step-image" src="img/Paso5-img2.png" alt="Imagen 1">
+                </div>
+                Nota: Repite el proceso de registro de usuario.
+            </li>
+            <br>
+            <li>Confirma que se hayan creado correctamente dirigiéndote a dominios y cuentas.
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso5-img3.png" alt="Imagen 1">
+                </div>
+            </li>
+        </ol>    
+        <h3 id="paso6">Correo de Prueba</h3>
+        <ol>
+            <li>Accede al enlace:
+                <div class="code-container">
+                    <code>http://192.168.0.14/mail/</code>
+                </div>
+            </li>
+            <li>Inicia sesión con los datos de los usuarios creados y envía un correo de prueba de un usuario a otro.</li>
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso6-img1.png" alt="Imagen 1"><br>
+                    <img class="step-image" src="img/Paso6-img2.png" alt="">
+                </div>
+            <li>Confirma que el correo haya llegado exitosamente.
+                <div class="img-container">
+                    <img class="step-image" src="img/Paso6-img3.png" alt="Imagen 1">
+                </div>
+            </li>
+        </ol>
+    </div>
+    <footer class="footer">
+        <p>Hecho por Carlos Johanny Jaimes Rivera y Claudia Patricia Noreña Vasquez.</p>
+        <p>Instituto Superior de Educación Rural - ISER. Servidores.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
